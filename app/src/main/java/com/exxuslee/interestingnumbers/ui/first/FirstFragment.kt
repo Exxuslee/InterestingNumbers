@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.exxuslee.interestingnumbers.databinding.FragmentFirstBinding
 import com.exxuslee.testprofitof.utils.showIf
 import com.google.android.material.snackbar.Snackbar
@@ -59,6 +61,22 @@ class FirstFragment : Fragment() {
             val msg = binding.input.text
             if (msg.isNotEmpty()) viewModel.getNumber(Integer.parseInt(msg.toString()))
         }
+
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val key = firstAdapter.currentList[viewHolder.adapterPosition].first
+                viewModel.removeNumber(key)
+            }
+        }).attachToRecyclerView(binding.recyclerView)
     }
 
     override fun onDestroyView() {

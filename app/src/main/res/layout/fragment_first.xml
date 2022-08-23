@@ -20,7 +20,7 @@
         android:imeOptions="actionDone"
         android:paddingLeft="20dp"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="21sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/fabNumber"
         app:layout_constraintStart_toStartOf="parent"

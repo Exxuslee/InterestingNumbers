@@ -18,9 +18,14 @@ class NumberRepositoryImpl(
         return if (result.isSuccessful) {
             val remoteData = result.body()
             if (remoteData != null) {
-                val number = remoteData.split(' ')[0].toInt()
-                NumberDao.insertNumber(mapper.remoteToLocal(remoteData, number))
-                Result.Success(Pair(number, remoteData))
+                try {
+                    val number = remoteData.split(' ')[0].toInt()
+                    NumberDao.insertNumber(mapper.remoteToLocal(remoteData, number))
+                    Result.Success(Pair(number, remoteData))
+                } catch (ex: NumberFormatException) {
+                    Result.Error(ex.toString())
+                }
+
             } else Result.Error(GENERAL_NETWORK_ERROR)
         } else Result.Error(GENERAL_NETWORK_ERROR)
     }

@@ -1,6 +1,7 @@
 package com.exxuslee.interestingnumbers.ui.first
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -75,6 +76,11 @@ class FirstViewModel(private val getIDUseCase: GetNumberUseCase.Base) : ViewMode
         val bundle = Bundle()
         bundle.putString("content", content)
         Navigation.findNavController(view).navigate(R.id.action_1fragment_to_2frafment, bundle)
+    }
+
+    fun removeNumber(key: Int) {
+        _ids.postValue(_ids.value?.minus(key))
+        Log.d(TAG, _ids.value.toString())
     }
 
     companion object {
