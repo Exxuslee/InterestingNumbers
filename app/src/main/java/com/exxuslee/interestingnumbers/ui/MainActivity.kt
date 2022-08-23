@@ -10,7 +10,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.exxuslee.interestingnumbers.R
 import com.exxuslee.interestingnumbers.databinding.ActivityMainBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 

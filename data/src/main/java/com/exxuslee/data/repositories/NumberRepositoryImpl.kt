@@ -26,7 +26,7 @@ class NumberRepositoryImpl(
     }
 
     override suspend fun getNumber(number: Int): Result<Pair<Int, String>> {
-        val localData = NumberDao.number(number)
+        val localData = NumberDao.getNumber(number)
         return if (localData != null) Result.Success(Pair(number, mapper.localToDomain(localData)))
         else remoteResult(apiService.getNumber(number = number))
     }

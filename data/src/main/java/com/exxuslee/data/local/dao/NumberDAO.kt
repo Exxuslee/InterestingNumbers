@@ -16,7 +16,7 @@ interface NumberDAO {
     suspend fun insertNumber(numberEntity: NumberEntity)
 
     @Query("SELECT * FROM table_number WHERE number = :number")
-    fun number(number: Int): NumberEntity?
+    fun getNumber(number: Int): NumberEntity?
 
 
 }
