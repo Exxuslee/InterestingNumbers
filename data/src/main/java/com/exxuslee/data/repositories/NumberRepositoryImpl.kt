@@ -14,20 +14,20 @@ class NumberRepositoryImpl(
 ) : NumberRepository {
     private val mapper = NumberMapper()
 
-    private suspend fun remoteResult(result: Response<String>): Result<String> {
+    private suspend fun remoteResult(result: Response<String>): Result<Pair<Int, String>> {
         return if (result.isSuccessful) {
             val remoteData = result.body()
             if (remoteData != null) {
                 val number = remoteData.split(' ')[0].toInt()
                 NumberDao.insertNumber(mapper.remoteToLocal(remoteData, number))
-                Result.Success(remoteData)
+                Result.Success(Pair(number, remoteData))
             } else Result.Error(GENERAL_NETWORK_ERROR)
         } else Result.Error(GENERAL_NETWORK_ERROR)
     }
 
-    override suspend fun getNumber(number: Int): Result<String> {
+    override suspend fun getNumber(number: Int): Result<Pair<Int, String>> {
         val localData = NumberDao.number(number)
-        return if (localData != null) Result.Success(mapper.localToDomain(localData))
+        return if (localData != null) Result.Success(Pair(number, mapper.localToDomain(localData)))
         else remoteResult(apiService.getNumber(number = number))
     }
 

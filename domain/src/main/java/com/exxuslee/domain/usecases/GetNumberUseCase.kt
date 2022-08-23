@@ -4,11 +4,13 @@ import com.exxuslee.domain.repositories.NumberRepository
 import com.exxuslee.domain.utils.Result
 
 interface GetNumberUseCase {
-    suspend fun getNumber(number: Int): Result<String>
-    suspend fun getRandom(): Result<String>
+    suspend fun getNumber(number: Int): Result<Pair<Int, String>>
+    suspend fun getRandom(): Result<Pair<Int, String>>
 
     class Base(private val repository: NumberRepository) : GetNumberUseCase {
-        override suspend fun getNumber(number: Int): Result<String> = repository.getNumber(number)
-        override suspend fun getRandom(): Result<String> = repository.getRandom()
+        override suspend fun getNumber(number: Int): Result<Pair<Int, String>> =
+            repository.getNumber(number)
+
+        override suspend fun getRandom(): Result<Pair<Int, String>> = repository.getRandom()
     }
 }

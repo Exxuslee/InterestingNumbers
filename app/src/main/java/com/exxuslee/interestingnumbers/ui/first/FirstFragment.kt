@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import com.exxuslee.interestingnumbers.databinding.FragmentFirstBinding
 import com.exxuslee.testprofitof.utils.showIf
 import com.google.android.material.snackbar.Snackbar
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FirstFragment : Fragment() {
 
-    private val viewModel by sharedViewModel<FirstViewModel>()
+    private val viewModel: FirstViewModel by viewModel()
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
     private lateinit var firstAdapter: FirstAdapter
@@ -39,8 +39,9 @@ class FirstFragment : Fragment() {
             }
         }
 
-        viewModel.ids.observe(viewLifecycleOwner) { list ->
-            firstAdapter.updateAdapter(list)
+        viewModel.ids.observe(viewLifecycleOwner) { ids ->
+            Log.d(TAG, ids.toString())
+            firstAdapter.updateAdapter(ids)
         }
 
         viewModel.isLoading.observe(viewLifecycleOwner) { state ->
@@ -48,8 +49,15 @@ class FirstFragment : Fragment() {
         }
 
         firstAdapter.onIDClickListener = {
-            Log.d(TAG, "position $it")
-            viewModel.selectID(it)
+            Log.d(TAG, "position ${it.first}")
+            viewModel.navigate(it.first, it.second, view)
+        }
+
+        binding.fabRandom.setOnClickListener { viewModel.getRandomNumber() }
+
+        binding.fabNumber.setOnClickListener {
+            val msg = binding.input.text
+            if (msg.isNotEmpty()) viewModel.getNumber(Integer.parseInt(msg.toString()))
         }
     }
 
@@ -59,6 +67,6 @@ class FirstFragment : Fragment() {
     }
 
     companion object {
-        const val TAG = "testProfit"
+        const val TAG = "testNumbers"
     }
 }

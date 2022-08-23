@@ -1,10 +1,11 @@
 package com.exxuslee.interestingnumbers.ui.first
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.exxuslee.domain.usecases.GetNumberUseCase
 import com.exxuslee.domain.utils.HandleResult
 import com.exxuslee.interestingnumbers.R
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class FirstViewModel(private val getIDUseCase: GetNumberUseCase.Base) : ViewModel() {
 
-    private val _ids = MutableLiveData<List<String>?>()
+    private val _ids = MutableLiveData<Map<Int, String>?>()
     val ids = _ids.asLiveData()
 
     private val _selectedID = MutableLiveData(0)
@@ -27,19 +28,19 @@ class FirstViewModel(private val getIDUseCase: GetNumberUseCase.Base) : ViewMode
     private val _dataFetchState = MutableLiveData<Boolean>()
     val dataFetchState = _dataFetchState.asLiveData()
 
-    fun remoteRandom() {
+    fun getRandomNumber() {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val handleResult = object : HandleResult<String> {
+            val handleResult = object : HandleResult<Pair<Int, String>> {
                 override fun handleError(message: String) {
                     _isLoading.postValue(false)
                     _dataFetchState.postValue(false)
                 }
 
-                override fun handleSuccess(data: String) {
+                override fun handleSuccess(data: Pair<Int, String>) {
                     _isLoading.postValue(false)
                     _dataFetchState.postValue(true)
-                    _ids.value = _ids.value?.plus(data)
+                    _ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
                 }
             }
             withContext(Dispatchers.IO) {
@@ -48,35 +49,19 @@ class FirstViewModel(private val getIDUseCase: GetNumberUseCase.Base) : ViewMode
         }
     }
 
-
-    fun selectID(id: Int) {
-        _selectedID.postValue(id)
-    }
-
-    fun pressButton(direction: Boolean) {
-        var cur = _selectedID.value
-        if (cur != null) {
-            if (direction) cur += 1 else cur -= 1
-            if (cur >= _ids.value?.size!!) cur = 0
-            if (cur < 0) cur = _ids.value?.size!! - 1
-            _selectedID.postValue(cur)
-        }
-
-    }
-
-    private fun loadNumber(number: Int) {
+    fun getNumber(number: Int) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val handleResult = object : HandleResult<String> {
+            val handleResult = object : HandleResult<Pair<Int, String>> {
                 override fun handleError(message: String) {
                     _isLoading.postValue(false)
                     _dataFetchState.postValue(false)
                 }
 
-                override fun handleSuccess(data: String) {
+                override fun handleSuccess(data: Pair<Int, String>) {
                     _isLoading.postValue(false)
                     _dataFetchState.postValue(true)
-                    _ids.value = _ids.value?.plus(data)
+                    _ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
                 }
             }
             withContext(Dispatchers.IO) {
@@ -85,14 +70,14 @@ class FirstViewModel(private val getIDUseCase: GetNumberUseCase.Base) : ViewMode
         }
     }
 
-    fun navigate(content: String, navController: NavController) {
+    fun navigate(id: Int, content: String, view: View) {
+        _selectedID.postValue(id)
         val bundle = Bundle()
         bundle.putString("content", content)
-        navController.navigate(R.id.action_FirstFragment_to_SecondFragment,
-            bundle)
+        Navigation.findNavController(view).navigate(R.id.action_1fragment_to_2frafment, bundle)
     }
 
     companion object {
-        const val TAG = "testProfit"
+        const val TAG = "testNumbers"
     }
 }

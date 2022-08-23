@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/input"
-        android:hint="@string/btn_number"
+        android:hint="@string/number"
         android:autofillHints="number"
         android:labelFor="@id/fabNumber"
         android:layout_width="0dp"
