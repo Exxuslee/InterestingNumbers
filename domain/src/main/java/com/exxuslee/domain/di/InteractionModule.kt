@@ -1,8 +1,8 @@
 package com.exxuslee.domain.di
 
-import com.exxuslee.domain.usecases.GetNumberUseCase
+import com.exxuslee.domain.usecases.NumberUseCase
 import org.koin.dsl.module
 
 val interactionModule = module {
-    factory<GetNumberUseCase.Base> { GetNumberUseCase.Base(get()) }
+    factory<NumberUseCase.Base> { NumberUseCase.Base(get()) }
 }

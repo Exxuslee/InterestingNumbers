@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
-import com.exxuslee.domain.usecases.GetNumberUseCase
+import com.exxuslee.domain.usecases.NumberUseCase
 import com.exxuslee.domain.utils.HandleResult
 import com.exxuslee.interestingnumbers.R
 import com.exxuslee.testprofitof.utils.asLiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FirstViewModel(private val getIDUseCase: GetNumberUseCase.Base) : ViewModel() {
+class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel() {
 
     private val _ids = MutableLiveData<Map<Int, String>?>()
     val ids = _ids.asLiveData()
