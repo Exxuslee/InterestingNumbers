@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.exxuslee.interestingnumbers.R
 
-class FirstAdapter(private var selectedPosition: Int = 0) :
+class FirstAdapter(private var selectedPosition: Int) :
     ListAdapter<Pair<Int, String>, FirstAdapter.FirstHolder>(FirstDiffCallback()) {
 
-    var onIDClickListener: ((Pair<Int, String>) -> Unit)? = null
+    var onIDClickListener: ((String, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FirstHolder {
         val view =
@@ -29,7 +29,7 @@ class FirstAdapter(private var selectedPosition: Int = 0) :
             notifyItemChanged(selectedPosition)
             selectedPosition = holder.adapterPosition
             notifyItemChanged(position)
-            onIDClickListener?.invoke(getItem(holder.adapterPosition))
+            onIDClickListener?.invoke(getItem(holder.adapterPosition).second, holder.adapterPosition)
         }
     }
 

@@ -8,7 +8,7 @@
 
 
     <EditText
-        android:id="@+id/input"
+        android:id="@+id/inputNumber"
         android:hint="@string/number"
         android:autofillHints="number"
         android:labelFor="@id/fabNumber"
@@ -36,7 +36,7 @@
         android:text="@string/btn_number"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/fabRandom"
-        app:layout_constraintStart_toEndOf="@+id/input"
+        app:layout_constraintStart_toEndOf="@+id/inputNumber"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/arrow_down_float" />
 

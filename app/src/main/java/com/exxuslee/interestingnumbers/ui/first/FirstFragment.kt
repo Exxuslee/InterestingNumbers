@@ -2,9 +2,11 @@ package com.exxuslee.interestingnumbers.ui.first
 
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +14,7 @@ import com.exxuslee.interestingnumbers.databinding.FragmentFirstBinding
 import com.exxuslee.testprofitof.utils.showIf
 import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class FirstFragment : Fragment() {
 
@@ -50,20 +53,27 @@ class FirstFragment : Fragment() {
             binding.progressBar.showIf { state }
         }
 
-        firstAdapter.onIDClickListener = {
-            Log.d(TAG, "position ${it.first}")
-            viewModel.navigate(it.first, it.second, view)
+        firstAdapter.onIDClickListener = { content, pos ->
+            viewModel.navigate(content, view, pos)
         }
 
         binding.fabRandom.setOnClickListener { viewModel.getRandomNumber() }
 
         binding.fabNumber.setOnClickListener {
-            val msg = binding.input.text
+            val msg = binding.inputNumber.text
             if (msg.isNotEmpty()) viewModel.getNumber(Integer.parseInt(msg.toString()))
         }
 
-        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        binding.inputNumber.setOnEditorActionListener { _, actionId, event ->
+            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER
+                || actionId == EditorInfo.IME_ACTION_DONE
+            ) {
+                binding.fabNumber.performClick()
+            }
+            false
+        }
 
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,

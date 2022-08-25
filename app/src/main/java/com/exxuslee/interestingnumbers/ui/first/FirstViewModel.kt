@@ -71,8 +71,8 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
         }
     }
 
-    fun navigate(id: Int, content: String, view: View) {
-        _selectedID.postValue(id)
+    fun navigate(content : String, view: View, pos:Int) {
+        _selectedID.postValue(pos)
         val bundle = Bundle()
         bundle.putString("content", content)
         Navigation.findNavController(view).navigate(R.id.action_1fragment_to_2frafment, bundle)
