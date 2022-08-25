@@ -32,12 +32,18 @@ class NumberRepositoryTest {
     }
 
     @Test
-    fun getCardInfo_fromRemote_returnSuccessCardInfo() = runBlocking {
+    fun getNumber_fromRemote_returnSuccessCardInfo() = runBlocking {
         `when`(apiService.getNumber(1)).thenReturn(Response.success("1 is one"))
-
         systemUnderTest.getNumber(1)
-
         verify(apiService, times(1)).getNumber(1)
+        verify(cardInfoDao, times(1)).insertNumber(fakeNumberEntity)
+    }
+
+    @Test
+    fun getRandom_fromRemote_returnSuccessCardInfo() = runBlocking {
+        `when`(apiService.getRandom()).thenReturn(Response.success("1 is one"))
+        systemUnderTest.getRandom()
+        verify(apiService, times(1)).getRandom()
         verify(cardInfoDao, times(1)).insertNumber(fakeNumberEntity)
     }
 }
