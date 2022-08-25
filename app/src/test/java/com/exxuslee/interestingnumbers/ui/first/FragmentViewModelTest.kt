@@ -40,15 +40,13 @@ class FragmentViewModelTest {
 
     @Test
     fun numberRemote_errorReturned_dataFetchState() = runBlocking {
-
         `when`(numberUseCase.getNumber(1)).thenReturn(Result.Error("Invalid"))
         systemUnderTest.getNumber(1)
-        MatcherAssert.assertThat(systemUnderTest.dataFetchState.getOrAwaitValue(), equalTo(false));
+        MatcherAssert.assertThat(systemUnderTest.dataFetchState.getOrAwaitValue(), equalTo(false))
     }
 
     @Test
     fun numberRemote_successDataReturned_dataFetchState() = runBlocking {
-
         `when`(numberUseCase.getNumber(1)).thenReturn(Result.Success(Pair(1, "1 is one")))
         systemUnderTest.getNumber(1)
         MatcherAssert.assertThat(systemUnderTest.dataFetchState.getOrAwaitValue(), `is`(true))
