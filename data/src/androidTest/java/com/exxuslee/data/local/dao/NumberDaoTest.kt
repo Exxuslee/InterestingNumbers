@@ -42,19 +42,14 @@ class NumberDaoTest {
     }
 
     @Test
-    fun insertCardInfo_getTaskInfo_returnSame() = runBlocking {
-        val cardInfoEntity = NumberEntity(
-            id = 1,
-            number = 1,
-            content = "1 number one"
-        )
+    fun insert_returnSame() = runBlocking {
+        val cardInfoEntity = NumberEntity(id = 1, number = 1, content = "1 number one")
         database.numberDAO.insertNumber(cardInfoEntity)
+        val returned = database.numberDAO.getNumber(1)
 
-        val returnedCardInfo = database.numberDAO.getNumber(1)
-
-        assertThat(returnedCardInfo as NumberEntity,notNullValue())
-        assertThat(returnedCardInfo.id, `is`(cardInfoEntity.id))
-        assertThat(returnedCardInfo.number, `is`(cardInfoEntity.number))
-        assertThat(returnedCardInfo.content, `is`(cardInfoEntity.content))
+        assertThat(returned as NumberEntity, notNullValue())
+        assertThat(returned.id, `is`(cardInfoEntity.id))
+        assertThat(returned.number, `is`(cardInfoEntity.number))
+        assertThat(returned.content, `is`(cardInfoEntity.content))
     }
 }
