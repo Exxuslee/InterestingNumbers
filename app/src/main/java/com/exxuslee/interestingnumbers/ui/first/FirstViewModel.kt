@@ -29,21 +29,21 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
     private val _dataFetchState = MutableLiveData<Boolean>()
     val dataFetchState = _dataFetchState.asLiveData()
 
+    private var handleResult = object : HandleResult<Pair<Int, String>> {
+        override fun handleError(message: String) {
+            _isLoading.postValue(false)
+            _dataFetchState.postValue(false)
+        }
+        override fun handleSuccess(data: Pair<Int, String>) {
+            _isLoading.postValue(false)
+            _dataFetchState.postValue(true)
+            _ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
+        }
+    }
+
     fun getRandomNumber() {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val handleResult = object : HandleResult<Pair<Int, String>> {
-                override fun handleError(message: String) {
-                    _isLoading.postValue(false)
-                    _dataFetchState.postValue(false)
-                }
-
-                override fun handleSuccess(data: Pair<Int, String>) {
-                    _isLoading.postValue(false)
-                    _dataFetchState.postValue(true)
-                    _ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
-                }
-            }
             withContext(Dispatchers.IO) {
                 getIDUseCase.getRandom().handle(handleResult)
             }
@@ -53,18 +53,6 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
     fun getNumber(number: Int) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            val handleResult = object : HandleResult<Pair<Int, String>> {
-                override fun handleError(message: String) {
-                    _isLoading.postValue(false)
-                    _dataFetchState.postValue(false)
-                }
-
-                override fun handleSuccess(data: Pair<Int, String>) {
-                    _isLoading.postValue(false)
-                    _dataFetchState.postValue(true)
-                    _ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
-                }
-            }
             withContext(Dispatchers.IO) {
                 getIDUseCase.getNumber(number).handle(handleResult)
             }
