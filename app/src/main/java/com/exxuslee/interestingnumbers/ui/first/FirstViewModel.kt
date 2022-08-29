@@ -34,6 +34,7 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
             _isLoading.postValue(false)
             _dataFetchState.postValue(false)
         }
+
         override fun handleSuccess(data: Pair<Int, String>) {
             _isLoading.postValue(false)
             _dataFetchState.postValue(true)
@@ -44,22 +45,18 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
     fun getRandomNumber() {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                getIDUseCase.getRandom().handle(handleResult)
-            }
+            withContext(Dispatchers.IO) { getIDUseCase.getRandom().handle(handleResult) }
         }
     }
 
     fun getNumber(number: Int) {
         _isLoading.postValue(true)
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                getIDUseCase.getNumber(number).handle(handleResult)
-            }
+            withContext(Dispatchers.IO) { getIDUseCase.getNumber(number).handle(handleResult) }
         }
     }
 
-    fun navigate(content : String, view: View, pos:Int) {
+    fun navigate(content: String, view: View, pos: Int) {
         _selectedID.postValue(pos)
         val bundle = Bundle()
         bundle.putString("content", content)
