@@ -39,7 +39,7 @@ class FirstFragment : Fragment() {
         firstAdapter = FirstAdapter(viewModel.getSelectedID())
         binding.recyclerView.adapter = firstAdapter
 
-        viewModel.dataFetchState.observe(viewLifecycleOwner) { state ->
+        viewModel.dataFetchState().onEach { state ->
             if (!state) {
                 binding.errorText.visibility = View.VISIBLE
                 Snackbar.make(
@@ -48,14 +48,18 @@ class FirstFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 ).show()
             }
-        }
+        }.launchWhenStarted(lifecycleScope)
 
-        viewModel.ids.observe(viewLifecycleOwner) { ids ->
+//        viewModel.ids.observe(viewLifecycleOwner) { ids ->
+//            Log.d(TAG, ids.toString())
+//            firstAdapter.updateAdapter(ids)
+//        }
+        viewModel.ids().onEach { ids ->
             Log.d(TAG, ids.toString())
             firstAdapter.updateAdapter(ids)
-        }
+        }.launchWhenStarted(lifecycleScope)
 
-        viewModel.isLoading.onEach { state -> binding.progressBar.showIf { state } }
+        viewModel.isLoading().onEach { state -> binding.progressBar.showIf { state } }
             .launchWhenStarted(lifecycleScope)
 
         firstAdapter.onIDClickListener = { content, pos ->

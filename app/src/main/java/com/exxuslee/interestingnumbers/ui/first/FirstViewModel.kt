@@ -18,28 +18,30 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel() {
-
-    private val _ids = MutableLiveData<Map<Int, String>?>()
-    val ids = _ids.asLiveData()
-
     private var selectedID = 0
 
-    private val _dataFetchState = MutableLiveData<Boolean>()
-    val dataFetchState = _dataFetchState.asLiveData()
+    private val _ids: MutableStateFlow<Map<Int, String>> = MutableStateFlow(mapOf())
+    fun ids() = _ids.asStateFlow()
+//    private val _ids = MutableLiveData<Map<Int, String>?>()
+//    val ids = _ids.asLiveData()
+
+    private val _dataFetchState = MutableStateFlow(true)
+    fun dataFetchState() = _dataFetchState.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    fun isLoading() = _isLoading.asStateFlow()
 
     private var handleResult = object : HandleResult<Pair<Int, String>> {
         override fun handleError(message: String) {
             _isLoading.value = false
-            _dataFetchState.postValue(false)
+            _dataFetchState.value = false
         }
 
         override fun handleSuccess(data: Pair<Int, String>) {
             _isLoading.value = false
-            _dataFetchState.postValue(true)
-            _ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
+            _dataFetchState.value = true
+            _ids.value = _ids.value.plus(data)
+            //_ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
         }
     }
 
@@ -67,7 +69,8 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
     }
 
     fun removeNumber(key: Int) {
-        _ids.postValue(_ids.value?.minus(key))
+        //_ids.postValue(_ids.value?.minus(key))
+        _ids.value = _ids.value.minus(key)
         Log.d(TAG, _ids.value.toString())
     }
 
