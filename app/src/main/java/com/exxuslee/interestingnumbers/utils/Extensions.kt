@@ -1,8 +1,11 @@
-package com.exxuslee.testprofitof.utils
+package com.exxuslee.interestingnumbers.utils
 
 import android.view.View
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 
 
 /**
@@ -22,4 +25,8 @@ inline fun <T : View> T.showIf(condition: (T) -> Boolean) {
  * to a [LiveData] of type [T]
  */
 fun <T> MutableLiveData<T>.asLiveData() = this as LiveData<T>
+
+fun<T> Flow<T>.launchWhenStarted(lifeCycleScope: LifecycleCoroutineScope){
+    lifeCycleScope.launchWhenStarted { this@launchWhenStarted.collect() }
+}
 

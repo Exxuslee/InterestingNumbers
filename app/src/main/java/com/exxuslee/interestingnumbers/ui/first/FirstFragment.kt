@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.exxuslee.interestingnumbers.databinding.FragmentFirstBinding
-import com.exxuslee.testprofitof.utils.showIf
+import com.exxuslee.interestingnumbers.utils.launchWhenStarted
+import com.exxuslee.interestingnumbers.utils.showIf
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -32,15 +36,17 @@ class FirstFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        firstAdapter = FirstAdapter(viewModel.selectedID.value ?: 0)
+        firstAdapter = FirstAdapter(viewModel.getSelectedID())
         binding.recyclerView.adapter = firstAdapter
 
         viewModel.dataFetchState.observe(viewLifecycleOwner) { state ->
             if (!state) {
                 binding.errorText.visibility = View.VISIBLE
-                Snackbar.make(requireView(),
+                Snackbar.make(
+                    requireView(),
                     "Oops! An error occured, check your connection and retry!",
-                    Snackbar.LENGTH_LONG).show()
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         }
 
@@ -49,9 +55,8 @@ class FirstFragment : Fragment() {
             firstAdapter.updateAdapter(ids)
         }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) { state ->
-            binding.progressBar.showIf { state }
-        }
+        viewModel.isLoading.onEach { state -> binding.progressBar.showIf { state } }
+            .launchWhenStarted(lifecycleScope)
 
         firstAdapter.onIDClickListener = { content, pos ->
             viewModel.navigate(content, view, pos)
