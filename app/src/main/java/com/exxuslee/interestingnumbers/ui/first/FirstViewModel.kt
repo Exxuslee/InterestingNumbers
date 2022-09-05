@@ -22,8 +22,6 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
 
     private val _ids: MutableStateFlow<Map<Int, String>> = MutableStateFlow(mapOf())
     fun ids() = _ids.asStateFlow()
-//    private val _ids = MutableLiveData<Map<Int, String>?>()
-//    val ids = _ids.asLiveData()
 
     private val _dataFetchState = MutableStateFlow(true)
     fun dataFetchState() = _dataFetchState.asStateFlow()
@@ -41,7 +39,6 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
             _isLoading.value = false
             _dataFetchState.value = true
             _ids.value = _ids.value.plus(data)
-            //_ids.postValue(_ids.value?.plus(data) ?: mapOf(data))
         }
     }
 
@@ -69,7 +66,6 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
     }
 
     fun removeNumber(key: Int) {
-        //_ids.postValue(_ids.value?.minus(key))
         _ids.value = _ids.value.minus(key)
         Log.d(TAG, _ids.value.toString())
     }

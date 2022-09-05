@@ -50,10 +50,6 @@ class FirstFragment : Fragment() {
             }
         }.launchWhenStarted(lifecycleScope)
 
-//        viewModel.ids.observe(viewLifecycleOwner) { ids ->
-//            Log.d(TAG, ids.toString())
-//            firstAdapter.updateAdapter(ids)
-//        }
         viewModel.ids().onEach { ids ->
             Log.d(TAG, ids.toString())
             firstAdapter.updateAdapter(ids)
