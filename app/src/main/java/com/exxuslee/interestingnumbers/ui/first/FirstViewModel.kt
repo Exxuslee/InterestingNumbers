@@ -24,9 +24,6 @@ class FirstViewModel(private val getIDUseCase: NumberUseCase.Base) : ViewModel()
 
     private var selectedID = 0
 
-//    private val _isLoading = MutableLiveData<Boolean>()
-//    val isLoading = _isLoading.asLiveData()
-
     private val _dataFetchState = MutableLiveData<Boolean>()
     val dataFetchState = _dataFetchState.asLiveData()
 
