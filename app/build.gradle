@@ -41,8 +41,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0-alpha07'
-        kotlinCompilerVersion "1.4.0"
+        kotlinCompilerExtensionVersion '1.3.0-beta01'
+        kotlinCompilerVersion '1.7.10'
     }
 
     dataBinding {
