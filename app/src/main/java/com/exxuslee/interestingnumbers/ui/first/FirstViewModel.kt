@@ -3,14 +3,12 @@ package com.exxuslee.interestingnumbers.ui.first
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.exxuslee.domain.usecases.NumberUseCase
 import com.exxuslee.domain.utils.HandleResult
 import com.exxuslee.interestingnumbers.R
-import com.exxuslee.interestingnumbers.utils.asLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
